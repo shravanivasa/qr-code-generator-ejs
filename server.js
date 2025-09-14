@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import qr from "qr-image";
+import { createServer } from "http";
 
 const app = express();
 
@@ -12,7 +13,7 @@ app.set("views", "./views");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-// Store last URL in memory (since we’re not saving to disk)
+// Store last URL in memory
 let lastURL = "";
 
 // Routes
@@ -25,11 +26,9 @@ app.post("/generate", (req, res) => {
   res.render("result", { url: lastURL });
 });
 
-// Serve QR as an image (streaming)
+// Stream QR code dynamically
 app.get("/qr.png", (req, res) => {
-  if (!lastURL) {
-    return res.status(400).send("No URL provided yet.");
-  }
+  if (!lastURL) return res.status(400).send("No URL provided.");
   const qr_svg = qr.image(lastURL, { type: "png" });
   res.type("png");
   qr_svg.pipe(res);
@@ -38,8 +37,10 @@ app.get("/qr.png", (req, res) => {
 // Export for Vercel
 export default app;
 
-// For local dev (run with: npm run dev)
+// Local dev fallback
 if (process.env.NODE_ENV !== "production") {
   const port = 3000;
-  app.listen(port, () => console.log(`Server running at http://localhost:${port}`));
+  createServer(app).listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+  });
 }
