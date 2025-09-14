@@ -1,16 +1,30 @@
 {
   "name": "qr-code-generator-ejs",
   "version": "1.0.0",
+  "description": "A Node.js app to generate QR codes using Express, EJS, and qr-image, deployed on Vercel.",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
+  "keywords": [
+    "qr",
+    "qr-code",
+    "express",
+    "ejs",
+    "vercel",
+    "nodejs"
+  ],
+  "author": "Shravani Vasa",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.20.2",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
-    "nodemon": "^3.1.10",
     "qr-image": "^3.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }
